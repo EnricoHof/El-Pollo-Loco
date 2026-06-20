@@ -19,19 +19,23 @@ class Character extends MovableObject {
     setInterval(() => {
       if (keyboard.RIGHT) {
         this.moveRight();
+        this.otherDirection = false;
       }
       if (keyboard.LEFT) {
         this.moveLeft();
+        this.otherDirection = true;
       }
     }, 1000 / 60);
   }
 
   animate() {
     setInterval(() => {
-      let i = this.currentImage % this.IMAGES_WALKING.length;
-      let path = this.IMAGES_WALKING[i];
-      this.img = this.imageCache[path];
-      this.currentImage++;
+      if (keyboard.RIGHT || keyboard.LEFT) {
+        let i = this.currentImage % this.IMAGES_WALKING.length;
+        let path = this.IMAGES_WALKING[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+      }
     }, 100);
   }
 
