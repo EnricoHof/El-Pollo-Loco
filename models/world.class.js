@@ -30,7 +30,8 @@ class World {
     new BackgroundObject("img/5_background/layers/1_first_layer/1.png", 1438),
   ];
 
-  statusBar = new StatusBar();
+  statusBar = new StatusBar("health", 20, 0);
+  bottleBar = new StatusBar("bottle", 20, 50);
   throwableObjects = [];
   lastThrow = 0;
   camera_x = 0;
@@ -40,17 +41,36 @@ class World {
     this.draw();
     this.checkCollisions();
     this.checkThrowObjects();
+    this.checkBottleHits();
   }
 
   checkThrowObjects() {
     setInterval(() => {
       let timepassed = (new Date().getTime() - this.lastThrow) / 1000;
-      if (keyboard.D && timepassed > 0.5) {
-        let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 100);
+      if (keyboard.D && timepassed > 0.5 && this.character.bottles > 0) {
+        let bottle = new ThrowableObject(
+          this.character.x + 50,
+          this.character.y + 100,
+        );
         this.throwableObjects.push(bottle);
+        this.character.bottles -= 20;
+        this.bottleBar.setPercentage(this.character.bottles);
         this.lastThrow = new Date().getTime();
       }
     }, 1000 / 60);
+  }
+
+  checkBottleHits() {
+    setInterval(() => {
+      this.throwableObjects.forEach((bottle, bottleIndex) => {
+        this.enemies.forEach((enemy, enemyIndex) => {
+          if (bottle.isColliding(enemy)) {
+            this.enemies.splice(enemyIndex, 1);
+            this.throwableObjects.splice(bottleIndex, 1);
+          }
+        });
+      });
+    }, 100);
   }
 
   checkCollisions() {
@@ -71,6 +91,7 @@ class World {
     this.addObjects(this.backgroundObjects);
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
+    this.addToMap(this.bottleBar);
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.addObjects(this.enemies);

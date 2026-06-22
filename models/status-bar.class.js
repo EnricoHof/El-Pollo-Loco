@@ -1,5 +1,5 @@
 class StatusBar extends MovableObject {
-  IMAGES = [
+  IMAGES_HEALTH = [
     "img/7_statusbars/1_statusbar/2_statusbar_health/green/0.png",
     "img/7_statusbars/1_statusbar/2_statusbar_health/green/20.png",
     "img/7_statusbars/1_statusbar/2_statusbar_health/green/40.png",
@@ -7,13 +7,23 @@ class StatusBar extends MovableObject {
     "img/7_statusbars/1_statusbar/2_statusbar_health/green/80.png",
     "img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png",
   ];
+  IMAGES_BOTTLE = [
+    "img/7_statusbars/1_statusbar/3_statusbar_bottle/green/0.png",
+    "img/7_statusbars/1_statusbar/3_statusbar_bottle/green/20.png",
+    "img/7_statusbars/1_statusbar/3_statusbar_bottle/green/40.png",
+    "img/7_statusbars/1_statusbar/3_statusbar_bottle/green/60.png",
+    "img/7_statusbars/1_statusbar/3_statusbar_bottle/green/80.png",
+    "img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png",
+  ];
+  IMAGES = [];
   percentage = 100;
 
-  constructor() {
+  constructor(type, x, y) {
     super();
+    this.IMAGES = type === "bottle" ? this.IMAGES_BOTTLE : this.IMAGES_HEALTH;
     this.loadImages(this.IMAGES);
-    this.x = 20;
-    this.y = 0;
+    this.x = x;
+    this.y = y;
     this.width = 200;
     this.height = 60;
     this.setPercentage(100);

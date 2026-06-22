@@ -25,6 +25,10 @@ class ThrowableObject extends MovableObject {
     }, 25);
   }
 
+  isAboveGround() {
+    return true;
+  }
+
   animate() {
     setInterval(() => {
       this.playAnimation(this.IMAGES_ROTATION);
