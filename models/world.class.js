@@ -31,12 +31,26 @@ class World {
   ];
 
   statusBar = new StatusBar();
+  throwableObjects = [];
+  lastThrow = 0;
   camera_x = 0;
   ctx;
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
     this.draw();
     this.checkCollisions();
+    this.checkThrowObjects();
+  }
+
+  checkThrowObjects() {
+    setInterval(() => {
+      let timepassed = (new Date().getTime() - this.lastThrow) / 1000;
+      if (keyboard.D && timepassed > 0.5) {
+        let bottle = new ThrowableObject(this.character.x + 50, this.character.y + 100);
+        this.throwableObjects.push(bottle);
+        this.lastThrow = new Date().getTime();
+      }
+    }, 1000 / 60);
   }
 
   checkCollisions() {
@@ -60,6 +74,7 @@ class World {
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.addObjects(this.enemies);
+    this.addObjects(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
     requestAnimationFrame(() => this.draw());
   }
