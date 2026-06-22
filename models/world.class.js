@@ -30,6 +30,7 @@ class World {
     new BackgroundObject("img/5_background/layers/1_first_layer/1.png", 1438),
   ];
 
+  statusBar = new StatusBar();
   camera_x = 0;
   ctx;
   constructor(canvas) {
@@ -43,6 +44,7 @@ class World {
       this.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
+          this.statusBar.setPercentage(this.character.energy);
         }
       });
     }, 200);
@@ -53,6 +55,9 @@ class World {
     this.camera_x = -this.character.x + 100;
     this.ctx.translate(this.camera_x, 0);
     this.addObjects(this.backgroundObjects);
+    this.ctx.translate(-this.camera_x, 0);
+    this.addToMap(this.statusBar);
+    this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.addObjects(this.enemies);
     this.ctx.translate(-this.camera_x, 0);
