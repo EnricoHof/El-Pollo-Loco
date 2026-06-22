@@ -35,6 +35,17 @@ class World {
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
     this.draw();
+    this.checkCollisions();
+  }
+
+  checkCollisions() {
+    setInterval(() => {
+      this.enemies.forEach((enemy) => {
+        if (this.character.isColliding(enemy)) {
+          this.character.hit();
+        }
+      });
+    }, 200);
   }
 
   draw() {
