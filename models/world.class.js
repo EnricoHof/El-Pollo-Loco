@@ -32,6 +32,20 @@ class World {
 
   statusBar = new StatusBar("health", 20, 0);
   bottleBar = new StatusBar("bottle", 20, 50);
+  coinBar = new StatusBar("coin", 20, 100);
+  coins = [
+    new Coin(500, 320),
+    new Coin(700, 250),
+    new Coin(900, 320),
+    new Coin(1200, 280),
+    new Coin(1500, 320),
+  ];
+  collectableBottles = [
+    new BottleGround(600),
+    new BottleGround(1000),
+    new BottleGround(1300),
+    new BottleGround(1700),
+  ];
   throwableObjects = [];
   lastThrow = 0;
   camera_x = 0;
@@ -42,6 +56,28 @@ class World {
     this.checkCollisions();
     this.checkThrowObjects();
     this.checkBottleHits();
+    this.checkCollects();
+  }
+
+  checkCollects() {
+    setInterval(() => {
+      this.coins.forEach((coin, index) => {
+        if (this.character.isColliding(coin)) {
+          this.coins.splice(index, 1);
+          this.character.coins = Math.min(this.character.coins + 20, 100);
+          this.coinBar.setPercentage(this.character.coins);
+        }
+      });
+      this.collectableBottles.forEach((bottle, index) => {
+        if (this.character.isColliding(bottle)) {
+          if (this.character.bottles < 100) {
+            this.collectableBottles.splice(index, 1);
+            this.character.bottles = Math.min(this.character.bottles + 20, 100);
+            this.bottleBar.setPercentage(this.character.bottles);
+          }
+        }
+      });
+    }, 100);
   }
 
   checkThrowObjects() {
@@ -92,9 +128,12 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleBar);
+    this.addToMap(this.coinBar);
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.addObjects(this.enemies);
+    this.addObjects(this.coins);
+    this.addObjects(this.collectableBottles);
     this.addObjects(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
     requestAnimationFrame(() => this.draw());

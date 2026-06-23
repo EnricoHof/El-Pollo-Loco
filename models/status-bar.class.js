@@ -15,18 +15,36 @@ class StatusBar extends MovableObject {
     "img/7_statusbars/1_statusbar/3_statusbar_bottle/green/80.png",
     "img/7_statusbars/1_statusbar/3_statusbar_bottle/green/100.png",
   ];
+  IMAGES_COIN = [
+    "img/7_statusbars/1_statusbar/1_statusbar_coin/orange/0.png",
+    "img/7_statusbars/1_statusbar/1_statusbar_coin/orange/20.png",
+    "img/7_statusbars/1_statusbar/1_statusbar_coin/orange/40.png",
+    "img/7_statusbars/1_statusbar/1_statusbar_coin/orange/60.png",
+    "img/7_statusbars/1_statusbar/1_statusbar_coin/orange/80.png",
+    "img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png",
+  ];
   IMAGES = [];
   percentage = 100;
 
   constructor(type, x, y) {
     super();
-    this.IMAGES = type === "bottle" ? this.IMAGES_BOTTLE : this.IMAGES_HEALTH;
+    this.IMAGES = this.selectImages(type);
     this.loadImages(this.IMAGES);
     this.x = x;
     this.y = y;
     this.width = 200;
     this.height = 60;
-    this.setPercentage(100);
+    this.setPercentage(type === "coin" ? 0 : 100);
+  }
+
+  selectImages(type) {
+    if (type === "bottle") {
+      return this.IMAGES_BOTTLE;
+    } else if (type === "coin") {
+      return this.IMAGES_COIN;
+    } else {
+      return this.IMAGES_HEALTH;
+    }
   }
 
   setPercentage(percentage) {
