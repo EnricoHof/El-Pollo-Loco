@@ -62,6 +62,7 @@ class World {
   throwableObjects = [];
   lastThrow = 0;
   camera_x = 0;
+  running = true;
   ctx;
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
@@ -70,10 +71,27 @@ class World {
     this.checkThrowObjects();
     this.checkBottleHits();
     this.checkCollects();
+    this.checkGameOver();
+  }
+
+  checkGameOver() {
+    setStoppableInterval(() => {
+      if (this.character.isDead()) {
+        this.endGame(false);
+      } else if (this.endboss.isDead()) {
+        this.endGame(true);
+      }
+    }, 200);
+  }
+
+  endGame(won) {
+    this.running = false;
+    stopGame();
+    showEndScreen(won);
   }
 
   checkCollects() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.coins.forEach((coin, index) => {
         if (this.character.isColliding(coin)) {
           this.coins.splice(index, 1);
@@ -94,7 +112,7 @@ class World {
   }
 
   checkThrowObjects() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       let timepassed = (new Date().getTime() - this.lastThrow) / 1000;
       if (keyboard.D && timepassed > 0.5 && this.character.bottles > 0) {
         let bottle = new ThrowableObject(
@@ -110,7 +128,7 @@ class World {
   }
 
   checkBottleHits() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.throwableObjects.forEach((bottle, bottleIndex) => {
         this.enemies.forEach((enemy, enemyIndex) => {
           if (bottle.isColliding(enemy)) {
@@ -128,7 +146,7 @@ class World {
   }
 
   checkCollisions() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
@@ -155,7 +173,9 @@ class World {
     this.addObjects(this.collectableBottles);
     this.addObjects(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
-    requestAnimationFrame(() => this.draw());
+    if (this.running) {
+      requestAnimationFrame(() => this.draw());
+    }
   }
 
   addObjects(objects) {

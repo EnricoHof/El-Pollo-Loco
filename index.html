@@ -22,12 +22,24 @@
 </head>
 
 <body onload="init()">
-    <h1>Welcome to El Pollo Loco!</h1>
-    <p>Enjoy our delicious chicken dishes made with fresh ingredients and bold flavors.</p>
+    <h1>El Pollo Loco</h1>
 
-    <canvas id="gameCanvas" width="720" height="480"></canvas>
+    <div id="canvasContainer">
+        <canvas id="gameCanvas" width="720" height="480"></canvas>
 
+        <div id="startScreen" class="overlay">
+            <img src="img/9_intro_outro_screens/start/startscreen_1.png" class="overlayImg" alt="Startscreen">
+            <button onclick="startGame()">Spiel starten</button>
+        </div>
 
+        <div id="endScreen" class="overlay d-none">
+            <img id="endImg" class="overlayImg" alt="Endscreen">
+            <div class="endButtons">
+                <button onclick="startGame()">Nochmal spielen</button>
+                <button onclick="backToStart()">Zum Start</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

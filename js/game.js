@@ -2,10 +2,42 @@ let canvas;
 let ctx;
 let world;
 let keyboard = new Keyboard();
+let intervalIds = [];
 
 function init() {
   canvas = document.getElementById("gameCanvas");
+}
+
+function setStoppableInterval(fn, time) {
+  let id = setInterval(fn, time);
+  intervalIds.push(id);
+  return id;
+}
+
+function stopGame() {
+  intervalIds.forEach((id) => clearInterval(id));
+  intervalIds = [];
+}
+
+function startGame() {
+  stopGame();
+  document.getElementById("startScreen").classList.add("d-none");
+  document.getElementById("endScreen").classList.add("d-none");
   world = new World(canvas);
+}
+
+function showEndScreen(won) {
+  let endImg = document.getElementById("endImg");
+  endImg.src = won
+    ? "img/You won, you lost/You won A.png"
+    : "img/You won, you lost/You lost.png";
+  document.getElementById("endScreen").classList.remove("d-none");
+}
+
+function backToStart() {
+  stopGame();
+  document.getElementById("endScreen").classList.add("d-none");
+  document.getElementById("startScreen").classList.remove("d-none");
 }
 
 window.addEventListener("keydown", (event) => {
