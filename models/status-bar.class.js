@@ -23,6 +23,14 @@ class StatusBar extends MovableObject {
     "img/7_statusbars/1_statusbar/1_statusbar_coin/orange/80.png",
     "img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png",
   ];
+  IMAGES_ENDBOSS = [
+    "img/7_statusbars/2_statusbar_endboss/green/green0.png",
+    "img/7_statusbars/2_statusbar_endboss/green/green20.png",
+    "img/7_statusbars/2_statusbar_endboss/green/green40.png",
+    "img/7_statusbars/2_statusbar_endboss/green/green60.png",
+    "img/7_statusbars/2_statusbar_endboss/green/green80.png",
+    "img/7_statusbars/2_statusbar_endboss/green/green100.png",
+  ];
   IMAGES = [];
   percentage = 100;
 
@@ -42,6 +50,8 @@ class StatusBar extends MovableObject {
       return this.IMAGES_BOTTLE;
     } else if (type === "coin") {
       return this.IMAGES_COIN;
+    } else if (type === "endboss") {
+      return this.IMAGES_ENDBOSS;
     } else {
       return this.IMAGES_HEALTH;
     }

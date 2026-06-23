@@ -1,5 +1,6 @@
 class World {
   character = new Character();
+  endboss = new Endboss();
   enemies = [
     new Chicken(),
     new Chicken(),
@@ -7,6 +8,7 @@ class World {
     new Chicken(),
     new Chicken(),
     new Chicken(),
+    this.endboss,
   ];
   backgroundObjects = [
     new BackgroundObject("img/5_background/layers/air.png", -719),
@@ -33,6 +35,7 @@ class World {
   statusBar = new StatusBar("health", 20, 0);
   bottleBar = new StatusBar("bottle", 20, 50);
   coinBar = new StatusBar("coin", 20, 100);
+  bossBar = new StatusBar("endboss", 480, 0);
   coins = [
     new Coin(500, 320),
     new Coin(700, 250),
@@ -101,7 +104,12 @@ class World {
       this.throwableObjects.forEach((bottle, bottleIndex) => {
         this.enemies.forEach((enemy, enemyIndex) => {
           if (bottle.isColliding(enemy)) {
-            this.enemies.splice(enemyIndex, 1);
+            if (enemy instanceof Endboss) {
+              enemy.hit();
+              this.bossBar.setPercentage(enemy.energy);
+            } else {
+              this.enemies.splice(enemyIndex, 1);
+            }
             this.throwableObjects.splice(bottleIndex, 1);
           }
         });
@@ -129,6 +137,7 @@ class World {
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleBar);
     this.addToMap(this.coinBar);
+    this.addToMap(this.bossBar);
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.addObjects(this.enemies);
