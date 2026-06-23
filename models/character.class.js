@@ -62,6 +62,8 @@ class Character extends MovableObject {
     "img/2_character_pepe/5_dead/D-57.png",
   ];
   lastAction = new Date().getTime();
+  levelStartX = -590;
+  levelEndX = 2400;
 
   constructor() {
     super().loadImage("img/2_character_pepe/2_walk/W-21.png");
@@ -78,11 +80,11 @@ class Character extends MovableObject {
 
   applyMovement() {
     setInterval(() => {
-      if (keyboard.RIGHT) {
+      if (keyboard.RIGHT && this.x < this.levelEndX) {
         this.moveRight();
         this.otherDirection = false;
       }
-      if (keyboard.LEFT) {
+      if (keyboard.LEFT && this.x > this.levelStartX) {
         this.moveLeft();
         this.otherDirection = true;
       }
