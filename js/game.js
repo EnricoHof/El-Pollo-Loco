@@ -3,9 +3,34 @@ let ctx;
 let world;
 let keyboard = new Keyboard();
 let intervalIds = [];
+let soundManager = new SoundManager();
+
+let sounds = {
+  jump: soundManager.register(new Audio("audio/jump.mp3")),
+  glass: soundManager.register(new Audio("audio/glass.mp3")),
+  pop: soundManager.register(new Audio("audio/pop.mp3")),
+  background: soundManager.register(new Audio("audio/background.mp3")),
+};
 
 function init() {
   canvas = document.getElementById("gameCanvas");
+  sounds.background.loop = true;
+  sounds.background.volume = 0.2;
+  sounds.jump.volume = 0.15;
+  sounds.glass.volume = 0.15;
+  sounds.pop.volume = 0.4;
+  updateMuteButton();
+}
+
+function toggleMute() {
+  soundManager.toggleMute();
+  updateMuteButton();
+}
+
+function updateMuteButton() {
+  document.getElementById("muteBtn").textContent = soundManager.muted
+    ? "🔇"
+    : "🔊";
 }
 
 function setStoppableInterval(fn, time) {
@@ -17,6 +42,7 @@ function setStoppableInterval(fn, time) {
 function stopGame() {
   intervalIds.forEach((id) => clearInterval(id));
   intervalIds = [];
+  sounds.background.pause();
 }
 
 function startGame() {
@@ -24,6 +50,7 @@ function startGame() {
   document.getElementById("startScreen").classList.add("d-none");
   document.getElementById("endScreen").classList.add("d-none");
   world = new World(canvas);
+  soundManager.play(sounds.background);
 }
 
 function showEndScreen(won) {

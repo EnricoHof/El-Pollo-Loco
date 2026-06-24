@@ -99,6 +99,7 @@ class Character extends MovableObject {
 
   jump() {
     this.speedY = 30;
+    soundManager.play(sounds.jump);
   }
 
   secondsSinceLastAction() {

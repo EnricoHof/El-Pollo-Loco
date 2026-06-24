@@ -132,11 +132,13 @@ class World {
       this.throwableObjects.forEach((bottle, bottleIndex) => {
         this.enemies.forEach((enemy, enemyIndex) => {
           if (bottle.isColliding(enemy)) {
+            soundManager.play(sounds.glass);
             if (enemy instanceof Endboss) {
               enemy.hit();
               this.bossBar.setPercentage(enemy.energy);
             } else {
               this.enemies.splice(enemyIndex, 1);
+              soundManager.play(sounds.pop);
             }
             this.throwableObjects.splice(bottleIndex, 1);
           }
