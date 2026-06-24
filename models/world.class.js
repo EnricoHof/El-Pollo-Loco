@@ -97,6 +97,7 @@ class World {
           this.coins.splice(index, 1);
           this.character.coins = Math.min(this.character.coins + 20, 100);
           this.coinBar.setPercentage(this.character.coins);
+          soundManager.play(sounds.coin);
         }
       });
       this.collectableBottles.forEach((bottle, index) => {
@@ -105,6 +106,7 @@ class World {
             this.collectableBottles.splice(index, 1);
             this.character.bottles = Math.min(this.character.bottles + 20, 100);
             this.bottleBar.setPercentage(this.character.bottles);
+            soundManager.play(sounds.bottle);
           }
         }
       });

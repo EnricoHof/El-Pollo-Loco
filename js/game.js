@@ -9,6 +9,8 @@ let sounds = {
   jump: soundManager.register(new Audio("audio/jump.mp3")),
   glass: soundManager.register(new Audio("audio/glass.mp3")),
   pop: soundManager.register(new Audio("audio/pop.mp3")),
+  coin: soundManager.register(new Audio("audio/coin.mp3")),
+  bottle: soundManager.register(new Audio("audio/bottle.mp3")),
   background: soundManager.register(new Audio("audio/background.mp3")),
 };
 
@@ -19,6 +21,8 @@ function init() {
   sounds.jump.volume = 0.15;
   sounds.glass.volume = 0.15;
   sounds.pop.volume = 0.4;
+  sounds.coin.volume = 0.3;
+  sounds.bottle.volume = 0.3;
   updateMuteButton();
 }
 
