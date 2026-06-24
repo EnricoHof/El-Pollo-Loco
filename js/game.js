@@ -11,6 +11,7 @@ let sounds = {
   pop: soundManager.register(new Audio("audio/pop.mp3")),
   coin: soundManager.register(new Audio("audio/coin.mp3")),
   bottle: soundManager.register(new Audio("audio/bottle.mp3")),
+  hurt: soundManager.register(new Audio("audio/hurt.mp3")),
   background: soundManager.register(new Audio("audio/background.mp3")),
 };
 
@@ -23,6 +24,7 @@ function init() {
   sounds.pop.volume = 0.4;
   sounds.coin.volume = 0.3;
   sounds.bottle.volume = 0.3;
+  sounds.hurt.volume = 0.4;
   updateMuteButton();
 }
 
@@ -54,7 +56,8 @@ function startGame() {
   document.getElementById("startScreen").classList.add("d-none");
   document.getElementById("endScreen").classList.add("d-none");
   world = new World(canvas);
-  soundManager.play(sounds.background);
+  sounds.background.currentTime = 0;
+  sounds.background.play();
 }
 
 function showEndScreen(won) {

@@ -153,8 +153,12 @@ class World {
     setStoppableInterval(() => {
       this.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
+          let wasHurt = this.character.isHurt();
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
+          if (!wasHurt) {
+            soundManager.play(sounds.hurt);
+          }
         }
       });
     }, 200);
