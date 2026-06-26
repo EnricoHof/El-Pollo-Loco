@@ -1,9 +1,15 @@
+@font-face {
+  font-family: "Zabars";
+  src: url("fonts/Zabars.ttf") format("truetype");
+}
+
 body {
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: "Zabars", sans-serif;
 }
 canvas {
   background-color: black;
@@ -42,7 +48,9 @@ canvas {
   position: relative;
   z-index: 1;
   padding: 12px 24px;
-  font-size: 20px;
+  font-family: "Zabars", sans-serif;
+  font-size: 24px;
+  letter-spacing: 1px;
   cursor: pointer;
   border: none;
   border-radius: 8px;
