@@ -29,10 +29,24 @@
         <canvas id="gameCanvas" width="720" height="480"></canvas>
 
         <button id="muteBtn" onclick="toggleMute()">🔊</button>
+        <button id="fullscreenBtn" onclick="toggleFullscreen()">⛶</button>
 
         <div id="startScreen" class="overlay">
             <img src="img/9_intro_outro_screens/start/startscreen_1.png" class="overlayImg" alt="Startscreen">
             <button onclick="startGame()">Spiel starten</button>
+            <button onclick="showKeys()">Steuerung</button>
+        </div>
+
+        <div id="keysScreen" class="overlay d-none">
+            <div class="keysBox">
+                <h2>Steuerung</h2>
+                <ul>
+                    <li><span>◀ ▶</span> Laufen (Pfeiltasten)</li>
+                    <li><span>▲ / Leertaste</span> Springen</li>
+                    <li><span>D</span> Flasche werfen</li>
+                </ul>
+                <button onclick="hideKeys()">Schließen</button>
+            </div>
         </div>
 
         <div id="endScreen" class="overlay d-none">

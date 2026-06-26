@@ -39,6 +39,15 @@ function updateMuteButton() {
     : "🔊";
 }
 
+function toggleFullscreen() {
+  let container = document.getElementById("canvasContainer");
+  if (!document.fullscreenElement) {
+    container.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
 function setStoppableInterval(fn, time) {
   let id = setInterval(fn, time);
   intervalIds.push(id);
@@ -72,6 +81,14 @@ function backToStart() {
   stopGame();
   document.getElementById("endScreen").classList.add("d-none");
   document.getElementById("startScreen").classList.remove("d-none");
+}
+
+function showKeys() {
+  document.getElementById("keysScreen").classList.remove("d-none");
+}
+
+function hideKeys() {
+  document.getElementById("keysScreen").classList.add("d-none");
 }
 
 window.addEventListener("keydown", (event) => {
