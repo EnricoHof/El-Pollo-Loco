@@ -160,6 +160,34 @@ canvas {
   color: #3a2200;
 }
 
+.impressumLink {
+  margin-top: 16px;
+  color: #3a2200;
+  font-size: 18px;
+  text-decoration: underline;
+}
+
+.legalPage {
+  max-width: 600px;
+  padding: 24px;
+  line-height: 1.5;
+}
+
+.legalPage h1 {
+  margin-top: 0;
+}
+
+.backLink {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: #ffb800;
+  color: #3a2200;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .d-none {
   display: none;
 }
