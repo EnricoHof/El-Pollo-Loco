@@ -26,6 +26,29 @@ function init() {
   sounds.bottle.volume = 0.3;
   sounds.hurt.volume = 0.4;
   updateMuteButton();
+  bindTouchButtons();
+}
+
+function bindTouchButtons() {
+  bindTouchButton("btnLeft", "LEFT");
+  bindTouchButton("btnRight", "RIGHT");
+  bindTouchButton("btnJump", "SPACE");
+  bindTouchButton("btnThrow", "D");
+}
+
+function bindTouchButton(buttonId, keyName) {
+  let button = document.getElementById(buttonId);
+  // Kontextmenue (Touch-and-Hold) auf dem Button unterdruecken
+  button.addEventListener("contextmenu", (event) => event.preventDefault());
+
+  button.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    keyboard[keyName] = true;
+  });
+  button.addEventListener("touchend", (event) => {
+    event.preventDefault();
+    keyboard[keyName] = false;
+  });
 }
 
 function toggleMute() {

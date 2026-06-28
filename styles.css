@@ -203,6 +203,92 @@ canvas {
   cursor: pointer;
 }
 
+#touchControls {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.touchGroup {
+  display: flex;
+  gap: 12px;
+}
+
+.touchBtn {
+  width: 60px;
+  height: 60px;
+  font-size: 26px;
+  cursor: pointer;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 184, 0, 0.85);
+  color: #3a2200;
+  touch-action: none;
+  user-select: none;
+}
+
+#rotateHint {
+  display: none;
+}
+
+/* Mobil / kleine Screens: Touch-Buttons zeigen, Spiel bildschirmfuellend */
+@media (max-width: 1024px) {
+  #touchControls {
+    display: flex;
+  }
+
+  body {
+    overflow: hidden;
+  }
+
+  body > h1,
+  .impressumLink {
+    display: none;
+  }
+
+  #canvasContainer {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  #canvasContainer canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+/* Hochformat: Dreh-Hinweis ueber alles legen */
+@media (max-width: 1024px) and (orientation: portrait) {
+  #rotateHint {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+    box-sizing: border-box;
+    background-color: #3a2200;
+    color: #ffe9c2;
+    font-size: 24px;
+    z-index: 100;
+  }
+
+  body {
+    overflow: hidden;
+  }
+}
+
 .d-none {
   display: none;
 }
