@@ -121,13 +121,17 @@ canvas {
   margin: 16px 0;
 }
 
+.keysBox h2 {
+  font-size: 28px;
+}
+
 .keysBox li {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
   column-gap: 16px;
-  margin: 10px 0;
-  font-size: 18px;
+  margin: 12px 0;
+  font-size: 21px;
   white-space: nowrap;
 }
 
@@ -170,11 +174,22 @@ canvas {
 .legalPage {
   max-width: 600px;
   padding: 24px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .legalPage h1 {
   margin-top: 0;
+  font-size: 40px;
+}
+
+.legalPage h2 {
+  font-size: 26px;
+}
+
+.legalPage p,
+.legalPage .backLink {
+  font-family: Arial, sans-serif;
+  font-size: 19px;
 }
 
 .backLink {
