@@ -45,7 +45,7 @@ class World {
   statusBar = new StatusBar("health", 20, 0);
   bottleBar = new StatusBar("bottle", 20, 50);
   coinBar = new StatusBar("coin", 20, 100);
-  bossBar = new StatusBar("endboss", 480, 0);
+  bossBar = new StatusBar("endboss", 480, 60);
   coins = [
     new Coin(500, 320),
     new Coin(700, 250),
