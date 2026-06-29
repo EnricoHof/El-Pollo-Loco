@@ -48,7 +48,7 @@ class StatusBar extends MovableObject {
     this.y = y;
     this.width = 200;
     this.height = 60;
-    this.setPercentage(type === "coin" ? 0 : 100);
+    this.setPercentage(type === "bottle" || type === "coin" ? 0 : 100);
   }
 
   /**
@@ -91,7 +91,7 @@ class StatusBar extends MovableObject {
       return 3;
     } else if (this.percentage >= 40) {
       return 2;
-    } else if (this.percentage >= 20) {
+    } else if (this.percentage > 0) {
       return 1;
     } else {
       return 0;

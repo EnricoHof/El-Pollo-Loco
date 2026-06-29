@@ -44,6 +44,12 @@ canvas {
   left: 0;
 }
 
+#endImg {
+  object-fit: contain;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
 .overlay button {
   position: relative;
   z-index: 1;
@@ -175,6 +181,7 @@ canvas {
   max-width: 600px;
   padding: 24px;
   line-height: 1.6;
+  font-family: Arial, sans-serif;
 }
 
 .legalPage h1 {
