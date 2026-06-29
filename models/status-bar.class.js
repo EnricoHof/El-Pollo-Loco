@@ -34,6 +34,12 @@ class StatusBar extends MovableObject {
   IMAGES = [];
   percentage = 100;
 
+  /**
+   * Erstellt eine Statusbar des gegebenen Typs an fester Position.
+   * @param {string} type - Art der Bar: "health", "bottle", "coin" oder "endboss".
+   * @param {number} x - Horizontale Position auf dem Bildschirm.
+   * @param {number} y - Vertikale Position auf dem Bildschirm.
+   */
   constructor(type, x, y) {
     super();
     this.IMAGES = this.selectImages(type);
@@ -45,6 +51,11 @@ class StatusBar extends MovableObject {
     this.setPercentage(type === "coin" ? 0 : 100);
   }
 
+  /**
+   * Waehlt das passende Bilderset zum Bar-Typ.
+   * @param {string} type - Art der Bar.
+   * @returns {string[]} Die Bildpfade fuer die 6 Fuellstufen.
+   */
   selectImages(type) {
     if (type === "bottle") {
       return this.IMAGES_BOTTLE;
@@ -57,12 +68,20 @@ class StatusBar extends MovableObject {
     }
   }
 
+  /**
+   * Setzt den Fuellstand und aktualisiert das angezeigte Bar-Bild.
+   * @param {number} percentage - Fuellstand von 0 bis 100.
+   */
   setPercentage(percentage) {
     this.percentage = percentage;
     let index = this.resolveImageIndex();
     this.img = this.imageCache[this.IMAGES[index]];
   }
 
+  /**
+   * Ordnet dem Fuellstand den passenden Bild-Index (0-5) zu.
+   * @returns {number} Index des anzuzeigenden Bildes.
+   */
   resolveImageIndex() {
     if (this.percentage == 100) {
       return 5;

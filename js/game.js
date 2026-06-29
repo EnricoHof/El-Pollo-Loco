@@ -15,6 +15,10 @@ let sounds = {
   background: soundManager.register(new Audio("audio/background.mp3")),
 };
 
+/**
+ * Initialisiert das Spiel beim Laden: Canvas, Sound-Lautstaerken,
+ * Mute-Button und Touch-Steuerung.
+ */
 function init() {
   canvas = document.getElementById("gameCanvas");
   sounds.background.loop = true;
@@ -29,6 +33,9 @@ function init() {
   bindTouchButtons();
 }
 
+/**
+ * Verbindet alle Touch-Buttons mit den zugehoerigen Tasten.
+ */
 function bindTouchButtons() {
   bindTouchButton("btnLeft", "LEFT");
   bindTouchButton("btnRight", "RIGHT");
@@ -36,6 +43,11 @@ function bindTouchButtons() {
   bindTouchButton("btnThrow", "D");
 }
 
+/**
+ * Bindet einen Touch-Button an eine keyboard-Taste (touchstart/-end).
+ * @param {string} buttonId - Die id des Button-Elements.
+ * @param {string} keyName - Der Name der keyboard-Eigenschaft (z.B. "LEFT").
+ */
 function bindTouchButton(buttonId, keyName) {
   let button = document.getElementById(buttonId);
   // Kontextmenue (Touch-and-Hold) auf dem Button unterdruecken
@@ -51,17 +63,26 @@ function bindTouchButton(buttonId, keyName) {
   });
 }
 
+/**
+ * Schaltet die Stummschaltung um und aktualisiert das Button-Icon.
+ */
 function toggleMute() {
   soundManager.toggleMute();
   updateMuteButton();
 }
 
+/**
+ * Setzt das Icon des Mute-Buttons je nach Mute-Zustand.
+ */
 function updateMuteButton() {
   document.getElementById("muteBtn").textContent = soundManager.muted
     ? "🔇"
     : "🔊";
 }
 
+/**
+ * Schaltet den Vollbildmodus des Spielfelds ein oder aus.
+ */
 function toggleFullscreen() {
   let container = document.getElementById("canvasContainer");
   if (!document.fullscreenElement) {
@@ -71,18 +92,30 @@ function toggleFullscreen() {
   }
 }
 
+/**
+ * Startet ein Intervall und merkt sich seine ID zum spaeteren Stoppen.
+ * @param {Function} fn - Die auszufuehrende Funktion.
+ * @param {number} time - Intervalldauer in Millisekunden.
+ * @returns {number} Die ID des Intervalls.
+ */
 function setStoppableInterval(fn, time) {
   let id = setInterval(fn, time);
   intervalIds.push(id);
   return id;
 }
 
+/**
+ * Stoppt alle laufenden Spiel-Intervalle und pausiert die Musik.
+ */
 function stopGame() {
   intervalIds.forEach((id) => clearInterval(id));
   intervalIds = [];
   sounds.background.pause();
 }
 
+/**
+ * Startet ein neues Spiel: blendet die Screens aus und erzeugt die Welt.
+ */
 function startGame() {
   stopGame();
   document.getElementById("startScreen").classList.add("d-none");
@@ -92,6 +125,10 @@ function startGame() {
   sounds.background.play();
 }
 
+/**
+ * Zeigt den Endscreen mit dem passenden Sieg- oder Niederlage-Bild.
+ * @param {boolean} won - true zeigt das Sieg-, false das Niederlage-Bild.
+ */
 function showEndScreen(won) {
   let endImg = document.getElementById("endImg");
   endImg.src = won
@@ -100,16 +137,25 @@ function showEndScreen(won) {
   document.getElementById("endScreen").classList.remove("d-none");
 }
 
+/**
+ * Kehrt zum Startscreen zurueck und stoppt das laufende Spiel.
+ */
 function backToStart() {
   stopGame();
   document.getElementById("endScreen").classList.add("d-none");
   document.getElementById("startScreen").classList.remove("d-none");
 }
 
+/**
+ * Zeigt das Overlay mit der Tastenbelegung an.
+ */
 function showKeys() {
   document.getElementById("keysScreen").classList.remove("d-none");
 }
 
+/**
+ * Versteckt das Overlay mit der Tastenbelegung.
+ */
 function hideKeys() {
   document.getElementById("keysScreen").classList.add("d-none");
 }

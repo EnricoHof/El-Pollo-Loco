@@ -13,11 +13,19 @@ class MovableObject {
   energy = 100;
   lastHit = 0;
 
+  /**
+   * Laedt ein einzelnes Bild als aktuelles Bild des Objekts.
+   * @param {string} path - Pfad zur Bilddatei.
+   */
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
   }
 
+  /**
+   * Laedt mehrere Bilder vor und legt sie im imageCache ab.
+   * @param {string[]} arr - Liste der Bildpfade.
+   */
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();
@@ -26,14 +34,23 @@ class MovableObject {
     });
   }
 
+  /**
+   * Bewegt das Objekt um seine Geschwindigkeit nach rechts.
+   */
   moveRight() {
     this.x += this.speed;
   }
 
+  /**
+   * Bewegt das Objekt um seine Geschwindigkeit nach links.
+   */
   moveLeft() {
     this.x -= this.speed;
   }
 
+  /**
+   * Wendet die Schwerkraft an: laesst das Objekt steigen und fallen.
+   */
   applyGravity() {
     setStoppableInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
@@ -43,16 +60,29 @@ class MovableObject {
     }, 1000 / 25);
   }
 
+  /**
+   * Prueft, ob sich das Objekt ueber der Bodenlinie befindet.
+   * @returns {boolean} true, wenn das Objekt in der Luft ist.
+   */
   isAboveGround() {
     return this.y < 145;
   }
 
+  /**
+   * Setzt das naechste Bild einer Animationssequenz als aktuelles Bild.
+   * @param {string[]} images - Bildpfade der Animation.
+   */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     this.img = this.imageCache[images[i]];
     this.currentImage++;
   }
 
+  /**
+   * Prueft per AABB-Verfahren, ob dieses Objekt ein anderes ueberlappt.
+   * @param {MovableObject} other - Das zu pruefende Gegenueber.
+   * @returns {boolean} true, wenn sich beide Rechtecke ueberschneiden.
+   */
   isColliding(other) {
     return (
       this.x + this.width > other.x &&
@@ -62,6 +92,9 @@ class MovableObject {
     );
   }
 
+  /**
+   * Fuegt dem Objekt Schaden zu und merkt sich den Zeitpunkt des Treffers.
+   */
   hit() {
     this.energy -= 5;
     if (this.energy < 0) {
@@ -71,11 +104,19 @@ class MovableObject {
     }
   }
 
+  /**
+   * Prueft, ob das Objekt vor weniger als 1 Sekunde getroffen wurde.
+   * @returns {boolean} true, wenn das Objekt gerade verletzt ist.
+   */
   isHurt() {
     let timepassed = (new Date().getTime() - this.lastHit) / 1000;
     return timepassed < 1;
   }
 
+  /**
+   * Prueft, ob die Energie des Objekts auf 0 gesunken ist.
+   * @returns {boolean} true, wenn das Objekt tot ist.
+   */
   isDead() {
     return this.energy == 0;
   }

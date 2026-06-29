@@ -64,6 +64,10 @@ class World {
   camera_x = 0;
   running = true;
   ctx;
+  /**
+   * Initialisiert die Welt und startet Zeichen- und Spiel-Schleifen.
+   * @param {HTMLCanvasElement} canvas - Das Canvas-Element des Spiels.
+   */
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
     this.draw();
@@ -74,6 +78,9 @@ class World {
     this.checkGameOver();
   }
 
+  /**
+   * Prueft fortlaufend auf Sieg (Boss tot) oder Niederlage (Charakter tot).
+   */
   checkGameOver() {
     setStoppableInterval(() => {
       if (this.character.isDead()) {
@@ -84,12 +91,19 @@ class World {
     }, 200);
   }
 
+  /**
+   * Beendet das Spiel, stoppt alle Schleifen und zeigt den Endscreen.
+   * @param {boolean} won - true bei Sieg, false bei Niederlage.
+   */
   endGame(won) {
     this.running = false;
     stopGame();
     showEndScreen(won);
   }
 
+  /**
+   * Prueft regelmaessig das Einsammeln von Muenzen und Flaschen.
+   */
   checkCollects() {
     setStoppableInterval(() => {
       this.collectCoins();
@@ -97,6 +111,9 @@ class World {
     }, 100);
   }
 
+  /**
+   * Sammelt beruehrte Muenzen ein und aktualisiert die Coin-Bar.
+   */
   collectCoins() {
     this.coins.forEach((coin, index) => {
       if (this.character.isColliding(coin)) {
@@ -108,6 +125,9 @@ class World {
     });
   }
 
+  /**
+   * Sammelt beruehrte Boden-Flaschen ein und fuellt die Munition (max. 100).
+   */
   collectBottles() {
     this.collectableBottles.forEach((bottle, index) => {
       if (this.character.isColliding(bottle) && this.character.bottles < 100) {
@@ -119,6 +139,9 @@ class World {
     });
   }
 
+  /**
+   * Erzeugt bei Tastendruck D eine Wurfflasche (mit Cooldown und Vorrat).
+   */
   checkThrowObjects() {
     setStoppableInterval(() => {
       let timepassed = (new Date().getTime() - this.lastThrow) / 1000;
@@ -135,6 +158,9 @@ class World {
     }, 1000 / 60);
   }
 
+  /**
+   * Prueft, ob geworfene Flaschen einen Gegner treffen.
+   */
   checkBottleHits() {
     setStoppableInterval(() => {
       this.throwableObjects.forEach((bottle, bottleIndex) => {
@@ -147,6 +173,12 @@ class World {
     }, 100);
   }
 
+  /**
+   * Verarbeitet einen Flaschentreffer: Boss nimmt Schaden, Huhn stirbt.
+   * @param {MovableObject} enemy - Der getroffene Gegner.
+   * @param {number} enemyIndex - Index des Gegners in enemies.
+   * @param {number} bottleIndex - Index der Flasche in throwableObjects.
+   */
   handleBottleHit(enemy, enemyIndex, bottleIndex) {
     soundManager.play(sounds.glass);
     if (enemy instanceof Endboss) {
@@ -159,6 +191,9 @@ class World {
     this.throwableObjects.splice(bottleIndex, 1);
   }
 
+  /**
+   * Prueft Kollisionen zwischen Charakter und Gegnern und fuegt Schaden zu.
+   */
   checkCollisions() {
     setStoppableInterval(() => {
       this.enemies.forEach((enemy) => {
@@ -174,6 +209,9 @@ class World {
     }, 200);
   }
 
+  /**
+   * Zeichnet einen Frame und plant per requestAnimationFrame den naechsten.
+   */
   draw() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.camera_x = -this.character.x + 100;
@@ -185,12 +223,18 @@ class World {
     }
   }
 
+  /**
+   * Zeichnet die Hintergrund-Ebenen mit Kamera-Verschiebung.
+   */
   drawBackground() {
     this.ctx.translate(this.camera_x, 0);
     this.addObjects(this.backgroundObjects);
     this.ctx.translate(-this.camera_x, 0);
   }
 
+  /**
+   * Zeichnet die festen Statusbars (camera-unabhaengig).
+   */
   drawStatusBars() {
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleBar);
@@ -198,6 +242,9 @@ class World {
     this.addToMap(this.bossBar);
   }
 
+  /**
+   * Zeichnet Charakter, Gegner und Items mit Kamera-Verschiebung.
+   */
   drawGameObjects() {
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
@@ -208,10 +255,18 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
   }
 
+  /**
+   * Zeichnet eine Liste von Objekten auf das Canvas.
+   * @param {MovableObject[]} objects - Die zu zeichnenden Objekte.
+   */
   addObjects(objects) {
     objects.forEach((object) => this.addToMap(object));
   }
 
+  /**
+   * Zeichnet ein Objekt und spiegelt es bei Bedarf (Blickrichtung).
+   * @param {MovableObject} mo - Das zu zeichnende Objekt.
+   */
   addToMap(mo) {
     if (mo.otherDirection) {
       this.flipImage(mo);
@@ -222,6 +277,10 @@ class World {
     }
   }
 
+  /**
+   * Spiegelt das Koordinatensystem fuer ein nach links blickendes Objekt.
+   * @param {MovableObject} mo - Das zu spiegelnde Objekt.
+   */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
@@ -229,6 +288,10 @@ class World {
     mo.x = mo.x * -1;
   }
 
+  /**
+   * Macht die Spiegelung rueckgaengig und stellt den Canvas-Zustand wieder her.
+   * @param {MovableObject} mo - Das zuvor gespiegelte Objekt.
+   */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();

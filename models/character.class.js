@@ -65,6 +65,9 @@ class Character extends MovableObject {
   levelStartX = -590;
   levelEndX = 2400;
 
+  /**
+   * Laedt alle Animationsbilder und startet Schwerkraft, Animation und Steuerung.
+   */
   constructor() {
     super().loadImage("img/2_character_pepe/2_walk/W-21.png");
     this.loadImages(this.IMAGES_WALKING);
@@ -78,6 +81,9 @@ class Character extends MovableObject {
     this.applyMovement();
   }
 
+  /**
+   * Wertet 60x pro Sekunde die Tasten fuer Bewegung, Sprung und Aktivitaet aus.
+   */
   applyMovement() {
     setStoppableInterval(() => {
       this.handleWalking();
@@ -90,6 +96,9 @@ class Character extends MovableObject {
     }, 1000 / 60);
   }
 
+  /**
+   * Bewegt den Charakter innerhalb der Levelgrenzen nach links oder rechts.
+   */
   handleWalking() {
     if (keyboard.RIGHT && this.x < this.levelEndX) {
       this.moveRight();
@@ -101,15 +110,25 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Loest einen Sprung aus und spielt den Sprung-Sound.
+   */
   jump() {
     this.speedY = 30;
     soundManager.play(sounds.jump);
   }
 
+  /**
+   * Berechnet die seit der letzten Aktion vergangene Zeit.
+   * @returns {number} Vergangene Zeit in Sekunden.
+   */
   secondsSinceLastAction() {
     return (new Date().getTime() - this.lastAction) / 1000;
   }
 
+  /**
+   * Spielt je nach Zustand die passende Charakter-Animation (Prioritaetskette).
+   */
   animate() {
     setStoppableInterval(() => {
       if (this.isDead()) {
@@ -126,6 +145,9 @@ class Character extends MovableObject {
     }, 100);
   }
 
+  /**
+   * Spielt die Schlaf-Animation nach 15s Inaktivitaet, sonst die Idle-Animation.
+   */
   playIdleOrSleep() {
     if (this.secondsSinceLastAction() > 15) {
       this.playAnimation(this.IMAGES_SLEEPING);

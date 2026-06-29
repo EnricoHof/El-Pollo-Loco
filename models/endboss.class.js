@@ -19,6 +19,9 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
+  /**
+   * Erstellt den Endboss am Levelende und startet seine Animation.
+   */
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
@@ -28,6 +31,9 @@ class Endboss extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Fuegt dem Boss 20 Schaden zu (mehr als normalen Gegnern).
+   */
   hit() {
     this.energy -= 20;
     if (this.energy < 0) {
@@ -37,6 +43,9 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Spielt je nach Zustand die Tod-, Verletzt- oder Lauf-Animation.
+   */
   animate() {
     setStoppableInterval(() => {
       if (this.isDead()) {

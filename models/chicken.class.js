@@ -8,6 +8,9 @@ class Chicken extends MovableObject {
     "img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
   ];
 
+  /**
+   * Erstellt ein Huhn mit zufaelliger Startposition und Geschwindigkeit.
+   */
   constructor() {
     super().loadImage("img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.loadImages(this.IMAGES_WALKING);
@@ -17,10 +20,16 @@ class Chicken extends MovableObject {
     this.applyMovement();
   }
 
+  /**
+   * Bewegt das Huhn kontinuierlich nach links.
+   */
   applyMovement() {
     setStoppableInterval(() => this.moveLeft(), 1000 / 60);
   }
 
+  /**
+   * Spielt die Lauf-Animation des Huhns in einer Endlosschleife.
+   */
   animate() {
     setStoppableInterval(() => {
       this.playAnimation(this.IMAGES_WALKING);
