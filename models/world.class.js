@@ -92,25 +92,31 @@ class World {
 
   checkCollects() {
     setStoppableInterval(() => {
-      this.coins.forEach((coin, index) => {
-        if (this.character.isColliding(coin)) {
-          this.coins.splice(index, 1);
-          this.character.coins = Math.min(this.character.coins + 20, 100);
-          this.coinBar.setPercentage(this.character.coins);
-          soundManager.play(sounds.coin);
-        }
-      });
-      this.collectableBottles.forEach((bottle, index) => {
-        if (this.character.isColliding(bottle)) {
-          if (this.character.bottles < 100) {
-            this.collectableBottles.splice(index, 1);
-            this.character.bottles = Math.min(this.character.bottles + 20, 100);
-            this.bottleBar.setPercentage(this.character.bottles);
-            soundManager.play(sounds.bottle);
-          }
-        }
-      });
+      this.collectCoins();
+      this.collectBottles();
     }, 100);
+  }
+
+  collectCoins() {
+    this.coins.forEach((coin, index) => {
+      if (this.character.isColliding(coin)) {
+        this.coins.splice(index, 1);
+        this.character.coins = Math.min(this.character.coins + 20, 100);
+        this.coinBar.setPercentage(this.character.coins);
+        soundManager.play(sounds.coin);
+      }
+    });
+  }
+
+  collectBottles() {
+    this.collectableBottles.forEach((bottle, index) => {
+      if (this.character.isColliding(bottle) && this.character.bottles < 100) {
+        this.collectableBottles.splice(index, 1);
+        this.character.bottles = Math.min(this.character.bottles + 20, 100);
+        this.bottleBar.setPercentage(this.character.bottles);
+        soundManager.play(sounds.bottle);
+      }
+    });
   }
 
   checkThrowObjects() {
@@ -134,19 +140,23 @@ class World {
       this.throwableObjects.forEach((bottle, bottleIndex) => {
         this.enemies.forEach((enemy, enemyIndex) => {
           if (bottle.isColliding(enemy)) {
-            soundManager.play(sounds.glass);
-            if (enemy instanceof Endboss) {
-              enemy.hit();
-              this.bossBar.setPercentage(enemy.energy);
-            } else {
-              this.enemies.splice(enemyIndex, 1);
-              soundManager.play(sounds.pop);
-            }
-            this.throwableObjects.splice(bottleIndex, 1);
+            this.handleBottleHit(enemy, enemyIndex, bottleIndex);
           }
         });
       });
     }, 100);
+  }
+
+  handleBottleHit(enemy, enemyIndex, bottleIndex) {
+    soundManager.play(sounds.glass);
+    if (enemy instanceof Endboss) {
+      enemy.hit();
+      this.bossBar.setPercentage(enemy.energy);
+    } else {
+      this.enemies.splice(enemyIndex, 1);
+      soundManager.play(sounds.pop);
+    }
+    this.throwableObjects.splice(bottleIndex, 1);
   }
 
   checkCollisions() {
@@ -167,13 +177,28 @@ class World {
   draw() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.camera_x = -this.character.x + 100;
+    this.drawBackground();
+    this.drawStatusBars();
+    this.drawGameObjects();
+    if (this.running) {
+      requestAnimationFrame(() => this.draw());
+    }
+  }
+
+  drawBackground() {
     this.ctx.translate(this.camera_x, 0);
     this.addObjects(this.backgroundObjects);
     this.ctx.translate(-this.camera_x, 0);
+  }
+
+  drawStatusBars() {
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleBar);
     this.addToMap(this.coinBar);
     this.addToMap(this.bossBar);
+  }
+
+  drawGameObjects() {
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.addObjects(this.enemies);
@@ -181,9 +206,6 @@ class World {
     this.addObjects(this.collectableBottles);
     this.addObjects(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
-    if (this.running) {
-      requestAnimationFrame(() => this.draw());
-    }
   }
 
   addObjects(objects) {

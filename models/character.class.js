@@ -80,14 +80,7 @@ class Character extends MovableObject {
 
   applyMovement() {
     setStoppableInterval(() => {
-      if (keyboard.RIGHT && this.x < this.levelEndX) {
-        this.moveRight();
-        this.otherDirection = false;
-      }
-      if (keyboard.LEFT && this.x > this.levelStartX) {
-        this.moveLeft();
-        this.otherDirection = true;
-      }
+      this.handleWalking();
       if ((keyboard.SPACE || keyboard.UP) && !this.isAboveGround()) {
         this.jump();
       }
@@ -95,6 +88,17 @@ class Character extends MovableObject {
         this.lastAction = new Date().getTime();
       }
     }, 1000 / 60);
+  }
+
+  handleWalking() {
+    if (keyboard.RIGHT && this.x < this.levelEndX) {
+      this.moveRight();
+      this.otherDirection = false;
+    }
+    if (keyboard.LEFT && this.x > this.levelStartX) {
+      this.moveLeft();
+      this.otherDirection = true;
+    }
   }
 
   jump() {
@@ -117,12 +121,16 @@ class Character extends MovableObject {
       } else if (keyboard.RIGHT || keyboard.LEFT) {
         this.playAnimation(this.IMAGES_WALKING);
       } else {
-        if (this.secondsSinceLastAction() > 15) {
-          this.playAnimation(this.IMAGES_SLEEPING);
-        } else {
-          this.playAnimation(this.IMAGES_IDLE);
-        }
+        this.playIdleOrSleep();
       }
     }, 100);
+  }
+
+  playIdleOrSleep() {
+    if (this.secondsSinceLastAction() > 15) {
+      this.playAnimation(this.IMAGES_SLEEPING);
+    } else {
+      this.playAnimation(this.IMAGES_IDLE);
+    }
   }
 }
